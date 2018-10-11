@@ -1,0 +1,11 @@
+INFO:tensorflow:global step 119999: loss: 0.9939 (0.57 sec/step)    Current Streaming Accuracy: 0.9512    Current Mean IOU: 0.7455
+INFO:tensorflow:Final Loss: 0.9938835
+INFO:tensorflow:Final Training Accuracy: 0.9511992
+INFO:tensorflow:Final Training Mean IOU: 0.74554604
+INFO:tensorflow:Final Validation Accuracy: 0.09164518
+INFO:tensorflow:Final Validation Mean IOU: 0.02838203
+INFO:tensorflow:Finished training! Saving model to disk now.
+INFO:tensorflow:Saving the images now...
+/home/d072092/.local/lib/python3.6/site-packages/matplotlib/cbook/deprecation.py:107: MatplotlibDeprecationWarning: Adding an axes using the same arguments as a previous axes currently reuses the earlier instance.  In a future version, a new instance will always be created and returned.  Meanwhile, this warning can be suppressed, and the future behavior ensured, by passing a unique label to each axes instance.
+  warnings.warn(message, mplDeprecation, stacklevel=1)
+
