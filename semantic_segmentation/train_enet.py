@@ -96,12 +96,12 @@ decay_steps = int(num_epochs_before_decay * num_steps_per_epoch)
 #=================CLASS WEIGHTS===============================
 #Median frequency balancing class_weights
 if weighting == "MFB":
-    class_weights = median_frequency_balancing(num_classes = num_classes)
+    class_weights = median_frequency_balancing(image_files = os.path.join(dataset_dir, 'trainannot'), num_classes = num_classes)
     print("========= Median Frequency Balancing Class Weights =========\n", class_weights)
 
 #Inverse weighing probability class weights
 elif weighting == "ENET":
-    class_weights = ENet_weighing(num_classes = num_classes)
+    class_weights = ENet_weighing(image_files = os.path.join(dataset_dir, 'trainannot'), num_classes = num_classes)
     print("========= ENet Class Weights =========\n", class_weights)
 
 #============= TRAINING =================
@@ -283,9 +283,11 @@ def run():
 
         #Define your supervisor for running a managed session. Do not run the summary_op automatically or else it will consume too much memory
         sv = tf.train.Supervisor(logdir=logdir, summary_op=None, init_fn=None)
-
+        config = tf.ConfigProto()
+        config.gpu_options.allow_growth = True
+        
         # Run the managed session
-        with sv.managed_session() as sess:
+        with sv.managed_session(config=config) as sess:
             for step in range(int(num_steps_per_epoch * num_epochs)):
                 #At the start of every epoch, show the vital information:
                 if step % num_batches_per_epoch == 0:

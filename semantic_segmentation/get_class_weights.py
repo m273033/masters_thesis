@@ -4,10 +4,10 @@ from scipy.misc import imread
 import ast
 import math
 
-image_dir = "./dataset/trainannot"
-image_files = [os.path.join(image_dir, file) for file in os.listdir(image_dir) if file.endswith('.png')]
+#image_dir = "./dataset/trainannot"
 
-def ENet_weighing(image_files=image_files, num_classes=13):
+
+def ENet_weighing(image_files, num_classes=13):
     '''
     The custom class weighing function as seen in the ENet paper.
 
@@ -18,6 +18,9 @@ def ENet_weighing(image_files=image_files, num_classes=13):
     - class_weights(list): a list of class weights where each index represents each class label and the element is the class weight for that label.
 
     '''
+    image_dir = image_files
+    image_files = [os.path.join(image_dir, file) for file in os.listdir(image_dir) if file.endswith('.png')]
+
     #initialize dictionary with all 0
     label_to_frequency = {}
     for i in range(num_classes):
@@ -50,7 +53,7 @@ def ENet_weighing(image_files=image_files, num_classes=13):
 
     return class_weights
 
-def median_frequency_balancing(image_files=image_files, num_classes=13):
+def median_frequency_balancing(image_files, num_classes=13):
     '''
     Perform median frequency balancing on the image files, given by the formula:
     f = Median_freq_c / total_freq_c
@@ -66,6 +69,9 @@ def median_frequency_balancing(image_files=image_files, num_classes=13):
     - class_weights(list): a list of class weights where each index represents each class label and the element is the class weight for that label.
 
     '''
+    image_dir = image_files
+    image_files = [os.path.join(image_dir, file) for file in os.listdir(image_dir) if file.endswith('.png')]
+
     #Initialize all the labels key with a list value
     label_to_frequency_dict = {}
     for i in range(num_classes):
