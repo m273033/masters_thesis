@@ -18,7 +18,8 @@ flags.DEFINE_integer('gpu', 1, 'GPU to use.')
 flags.DEFINE_string('dataset_dir', './dataset', 'The dataset directory to find the train, validation and test images.')
 flags.DEFINE_string('checkpoint_dir', './log/original', 'The checkpoint directory to restore your mode.l')
 flags.DEFINE_string('logdir', './log/original_test', 'The log directory for event files created during test evaluation.')
-flags.DEFINE_boolean('save_images', True, 'If True, saves 10 images to your logdir for visualization.')
+flags.DEFINE_boolean('save_images', True, 'If True, saves all testset images to your logdir for visualization.')
+flags.DEFINE_boolean('batch_norm', False, 'If True, sets batch_norm training mode to true')
 
 #Evaluation information
 flags.DEFINE_integer('num_classes', 13, 'The number of classes to predict.')
@@ -45,6 +46,7 @@ image_width = FLAGS.image_width
 num_epochs = FLAGS.num_epochs
 
 save_images = FLAGS.save_images
+batch_norm = FLAGS.batch_norm
 
 #Architectural changes
 num_initial_blocks = FLAGS.num_initial_blocks
@@ -93,7 +95,7 @@ def run():
             logits, probabilities = ENet(images,
                                          num_classes,
                                          batch_size=batch_size,
-                                         is_training=True,
+                                         is_training=batch_norm,
                                          reuse=None,
                                          num_initial_blocks=num_initial_blocks,
                                          stage_two_repeat=stage_two_repeat,
@@ -146,9 +148,11 @@ def run():
 
         #Define your supervisor for running a managed session. Do not run the summary_op automatically or else it will consume too much memory
         sv = tf.train.Supervisor(logdir = logdir, summary_op = None, init_fn=restore_fn)
-
+        config = tf.ConfigProto()
+        config.gpu_options.allow_growth = True
+        
         #Run the managed session
-        with sv.managed_session() as sess:
+        with sv.managed_session(config=config) as sess:
             for step in range(int(num_steps_per_epoch * num_epochs)):
                 #print vital information every start of the epoch as always
                 if step % num_batches_per_epoch == 0:
@@ -184,7 +188,7 @@ def run():
                 logging.info('Saving the images now...')
                 predictions_val, annotations_val = sess.run([predictions, annotations])
 
-                for i in range(10):
+                for i in range(len(predictions_val)):
                     predicted_annotation = predictions_val[i]
                     annotation = annotations_val[i]
 
