@@ -290,7 +290,6 @@ def run():
         if transfer_learning:
             # Set up the variables to restore and restoring function from a saver.
             variables_to_restore = slim.get_variables_to_restore(exclude=exclude)
-
             saver = tf.train.Saver(variables_to_restore)
         
         def restore_fn(sess):
@@ -416,9 +415,11 @@ def run():
             sv = tf.train.Supervisor(logdir = logdir, summary_op = None, init_fn=restore_fn)
         else:
             sv = tf.train.Supervisor(logdir=logdir, summary_op=None, init_fn=None)
+        config = tf.ConfigProto()
+        config.gpu_options.allow_growth = True
 
         # Run the managed session
-        with sv.managed_session() as sess:
+        with sv.managed_session(config=config) as sess:
             for step in range(int(num_steps_per_epoch * num_epochs)):
                 #At the start of every epoch, show the vital information:
                 if step % num_batches_per_epoch == 0:
