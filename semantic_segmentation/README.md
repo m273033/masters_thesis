@@ -15,16 +15,20 @@ Use make-combine.py to have a combined dataset
 
 ### 5. Instructions to train the model:
 - For the combined dataset:
-		python3 train_enet.py --dataset_dir="./dataset/combined/" --weighting="ENET" --num_epochs=300 --logdir="./log/combined_run"
+
+python3 train_enet.py --dataset_dir="./dataset/combined/" --weighting="ENET" --num_epochs=300 --logdir="./log/combined_run"
+
 - For the model trained only on Cityscapes dataset:
-		python3 train_enet.py --dataset_dir="./dataset/cityscapes/" --weighting="ENET" --num_epochs=300 --logdir="./log/cityscapes_run"
+
+python3 train_enet.py --dataset_dir="./dataset/cityscapes/" --weighting="ENET" --num_epochs=300 --logdir="./log/cityscapes_run"
+
 - To apply transfer learning from CARLA to Cityscapes:
 	- Train the network on CARLA first:
-	 
-	 python3 train_enet.py --dataset_dir="./dataset/carla/" --weighting="ENET" --num_epochs=300 --logdir="./log/carla_run"
+
+python3 train_enet.py --dataset_dir="./dataset/carla/" --weighting="ENET" --num_epochs=300 --logdir="./log/carla_run"
 	- Transfer Learning on Cityscapes:
 	 
-	 python3 train_enet_tl_.py --checkpoint_dir="./log/carla_run" --dataset_dir="./dataset/cityscapes/" --weighting="ENET" --num_epochs=300 --logdir="./log/tl_cityscapes_run" --transfer_learning=True
+python3 train_enet_tl_.py --checkpoint_dir="./log/carla_run" --dataset_dir="./dataset/cityscapes/" --weighting="ENET" --num_epochs=300 --logdir="./log/tl_cityscapes_run" --transfer_learning=True
 
 ### 6. Test all of these networks on Cityscapes data:
 python3 test_enet.py --dataset_dir="./dataset/cityscapes" --checkpoint_dir="./log/model_to_test" --logdir="./log/model_to_test/test"
