@@ -25,7 +25,6 @@ python3 train_enet.py --dataset_dir="./dataset/cityscapes/" --weighting="ENET" -
 - To apply transfer learning from CARLA to Cityscapes, train the network on CARLA first and apply Transfer Learning on Cityscapes::
 ```
 python3 train_enet.py --dataset_dir="./dataset/carla/" --weighting="ENET" --num_epochs=300 --logdir="./log/carla_run"
-
 python3 train_enet_tl_.py --checkpoint_dir="./log/carla_run" --dataset_dir="./dataset/cityscapes/" --weighting="ENET" --num_epochs=300 --logdir="./log/tl_cityscapes_run" --transfer_learning=True
 ```
 ### 6. Test all of these networks on Cityscapes data:
